@@ -1,0 +1,54 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+from analyzer import analyze_messages
+from config import DATA_FILE
+
+def main():
+    """
+    Main function to load data, perform analysis, and display results.
+    """
+    try:
+        # Determine file type and load data accordingly
+        if DATA_FILE.endswith('.csv'):
+            df = pd.read_csv(DATA_FILE)
+        elif DATA_FILE.endswith('.json'):
+            df = pd.read_json(DATA_FILE)
+        else:
+            raise ValueError("Unsupported file format. Please use CSV or JSON.")
+
+        # Check if required columns are present
+        required_columns = ['timestamp', 'user_id', 'message_text']
+        if not all(col in df.columns for col in required_columns):
+            raise ValueError(f"Missing required columns.  Expected: {required_columns}.  Got: {list(df.columns)}")
+
+        # Convert timestamp to datetime objects
+        df['timestamp'] = pd.to_datetime(df['timestamp'])
+
+        # Perform analysis
+        results = analyze_messages(df)
+
+        # Print results
+        print("\n--- Analysis Results ---")
+        for key, value in results.items():
+            print(f"{key}: {value}")
+
+        # Example: Visualize message frequency over time (optional)
+        plt.figure(figsize=(12, 6))
+        sns.histplot(df['timestamp'], kde=True) #kde adds density line
+        plt.title("Message Frequency Over Time")
+        plt.xlabel("Time")
+        plt.ylabel("Frequency")
+        plt.xticks(rotation=45)
+        plt.tight_layout()
+        plt.show()
+
+    except FileNotFoundError:
+        print(f"Error: Data file not found at {DATA_FILE}")
+    except ValueError as e:
+        print(f"Error: {e}")
+    except Exception as e:
+        print(f"An unexpected error occurred: {e}")
+
+if __name__ == "__main__":
+    main()
