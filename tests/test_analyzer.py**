@@ -1,0 +1,44 @@
+import pandas as pd
+import unittest
+from analyzer import analyze_messages
+
+class TestAnalyzer(unittest.TestCase):
+
+    def test_analyze_messages_basic(self):
+        data = {
+            'timestamp': ['2023-10-26 10:00:00', '2023-10-26 10:05:00', '2023-10-26 10:10:00'],
+            'user_id': ['user1', 'user2', 'user1'],
+            'message_text': ['Hello', 'World', 'Goodbye']
+        }
+        df = pd.DataFrame(data)
+        results = analyze_messages(df)
+
+        self.assertEqual(results['total_messages'], 3)
+        self.assertEqual(results['messages_per_user']['user1'], 2)
+        self.assertEqual(results['messages_per_user']['user2'], 1)
+        self.assertAlmostEqual(results['average_message_length'], 5.0)
+
+    def test_analyze_messages_empty(self):
+        df = pd.DataFrame({'timestamp': [], 'user_id': [], 'message_text': []})
+        results = analyze_messages(df)
+
+        self.assertEqual(results['total_messages'], 0)
+        self.assertEqual(results['messages_per_user'], {})
+        self.assertTrue(pd.isna(results['average_message_length']))  # Handle empty DataFrames
+
+    def test_top_users(self):
+        data = {
+            'timestamp': ['2023-10-26 10:00:00'] * 10,
+            'user_id': ['user1'] * 5 + ['user2'] * 3 + ['user3'] * 2,
+            'message_text': ['test'] * 10
+        }
+        df = pd.DataFrame(data)
+        results = analyze_messages(df)
+
+        self.assertEqual(list(results['top_users'].keys())[0], 'user1')
+        self.assertEqual(list(results['top_users'].keys())[1], 'user2')
+        self.assertEqual(list(results['top_users'].keys())[2], 'user3')
+
+
+if __name__ == '__main__':
+    unittest.main()
