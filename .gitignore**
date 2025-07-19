@@ -1,0 +1,54 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.so
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.eggs/
+dist/
+build/
+sdist/
+*.egg-info/
+
+# Installed packages
+# Edit this list if your project is installed in a different location
+venv/
+env/
+ENV/
+*.env
+.env
+
+# PyInstaller
+#  Usually these files are written into a dist/ directory.
+#  See https://github.com/pyinstaller/pyinstaller/blob/develop/docs/usage-advices.rst
+*.manifest
+*.spec
+
+# Compiled source #
+*.com
+*.class
+*.dll
+*.exe
+*.o
+*.so
+
+# Logs and databases
+*.log
+*.db
+*.sqlite
+*.sqlite3
+
+# OS generated files #
+.DS_Store
+Thumbs.db
+
+# Jupyter Notebook
+.ipynb_checkpoints/
+
+# VS Code
+.vscode/
