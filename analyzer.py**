@@ -1,0 +1,32 @@
+import pandas as pd
+from collections import Counter
+
+def analyze_messages(df):
+    """
+    Analyzes LinkedIn channel message data.
+
+    Args:
+        df (pd.DataFrame): DataFrame containing message data with 'timestamp',
+                           'user_id', and 'message_text' columns.
+
+    Returns:
+        dict: A dictionary containing analysis results.
+    """
+    results = {}
+
+    # Total number of messages
+    results['total_messages'] = len(df)
+
+    # Number of messages per user
+    user_message_counts = df['user_id'].value_counts().to_dict()
+    results['messages_per_user'] = user_message_counts
+
+    # Average message length
+    df['message_length'] = df['message_text'].str.len()
+    results['average_message_length'] = df['message_length'].mean()
+
+    # Top 5 most active users
+    top_users = df['user_id'].value_counts().nlargest(5).to_dict()
+    results['top_users'] = top_users
+
+    return results
