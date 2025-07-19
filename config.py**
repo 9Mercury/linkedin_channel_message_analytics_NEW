@@ -1,0 +1,9 @@
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+DATA_FILE = os.getenv("LINKEDIN_DATA_FILE")
+DATE_FORMAT = "%Y-%m-%d %H:%M:%S"  # Default date format
+
+# Add any other configuration parameters here
